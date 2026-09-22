@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RAM Crisis 2026 – A college project explaining the global memory shortage, prices, supply and demand, and AI impact.">
+  <title>RAM Crisis 2026 – The Global Memory Shortage</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body ng-app="ramCrisisApp" ng-controller="MainController" ng-cloak>
+
+  
+  <header id="site-header" class="site-header">
+    <div id="brand" class="brand">
+      <h1 id="site-logo" class="site-logo">RAM CRISIS</h1>
+      <p class="site-tagline">College Project | Global Memory Shortage</p>
+    </div>
+
+    <button type="button" id="nav-toggle" class="nav-toggle" aria-controls="main-nav" aria-expanded="false">Menu</button>
+    <nav id="main-nav" class="main-nav" aria-label="Main navigation">
+      <ul class="nav-list">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#crisis">Crisis</a></li>
+        <li><a href="#prices">Prices</a></li>
+        <li><a href="#supply-demand">Supply &amp; Demand</a></li>
+        <li><a href="#ai-impact">AI Impact</a></li>
+        <li><a href="#manufacturers">Manufacturers</a></li>
+        <li><a href="#ram-basics">RAM Basics</a></li>
+        <li><a href="#timeline">Timeline</a></li>
+        <li><a href="#sources">Sources</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main-content" class="main-content">
+
+    
+    <section id="home" class="hero-section">
+      <h2 class="hero-title">RAM Crisis <span class="year">2026</span></h2>
+      <p class="hero-subtitle">Understanding the Global Memory Shortage</p>
+      <p class="hero-intro">
+        The RAM crisis refers to a period of tight memory supply, higher prices, and competing demand
+        from consumers, servers, and artificial intelligence systems. This page explains the shortage
+        in simple language: what RAM is, why prices can rise, who is affected, and how supply and demand
+        interact. Figures shown here are placeholders for a college project and should be updated with
+        current sources.
+      </p>
+
+      <aside id="crisis-indicator" class="crisis-indicator placeholder-box">
+        <h3>Crisis Indicator</h3>
+        <p id="crisis-indicator-status">Sample status: TIGHT SUPPLY. Not live data.</p>
+        <div id="crisis-meter-hero" class="crisis-meter-wrap meter-tight" aria-label="Sample crisis meter">
+          <div class="crisis-meter-track">
+            <div id="crisis-meter-fill" class="crisis-meter-fill"></div>
+          </div>
+          <p class="meter-label">{{ crisisLevel.label }}</p>
+        </div>
+        <div class="meter-buttons" role="group" aria-label="Sample crisis states">
+          <button type="button"
+                  class="meter-btn"
+                  ng-repeat="state in crisisStates"
+                  ng-class="{ 'is-active': crisisLevel.id === state.id }"
+                  ng-click="setCrisisLevel(state)">
+            {{ state.label }}
+          </button>
+        </div>
+      </aside>
+    </section>
+
+   
+    <section id="crisis-status" class="status-section">
+      <h2>Current Crisis Status</h2>
+      <p>The cards below use placeholder values until live data is connected. {{ dataNotice }}</p>
+
+      <div id="status-cards" class="card-grid">
+        <article class="info-card" ng-repeat="card in statusCards" id="card-{{ card.id }}">
+          <h3>{{ card.label }}</h3>
+          <p class="stat-number" ng-if="card.number" data-count="{{ card.number }}">{{ card.number }}</p>
+          <p>{{ card.value }}</p>
+        </article>
+      </div>
+    </section>
+
+   
+    <section id="crisis" class="crisis-explain-section">
+      <h2>What Is the RAM Crisis?</h2>
+
+      <article id="crisis-overview">
+        <h3>The shortage in simple language</h3>
+        <p>
+          RAM (Random Access Memory) is the short-term working memory of computers, phones, and servers.
+          A RAM crisis happens when factories cannot produce enough memory chips for everyone who needs them.
+          When demand is higher than supply, buyers compete for limited stock, and prices often rise.
+        </p>
+      </article>
+
+      <article id="why-prices-increase">
+        <h3>Why RAM prices can increase</h3>
+        <p>
+          Prices can increase when production is limited, when factories switch capacity to other products,
+          when shipping or materials cost more, or when large buyers (such as data centers) reserve a large
+          share of output. Prices can also move because of inventory cycles: if retailers and PC makers
+          restock at the same time, short-term shortages can appear even if long-term capacity is improving.
+        </p>
+      </article>
+
+      <article id="supply-demand-difference">
+        <h3>Supply vs demand</h3>
+        <p>
+          <strong>Supply</strong> is how much memory manufacturers can produce and ship.
+          <strong>Demand</strong> is how much memory customers want to buy. If demand is greater than supply,
+          the market is tight. If supply is greater than demand, prices often fall. The 2026 discussion
+          focuses on whether AI servers, consumer PCs, phones, and other devices are asking for more memory
+          than factories can currently deliver.
+        </p>
+      </article>
+    </section>
+
+    <section id="prices" class="price-tracker-section">
+      <h2>RAM Price Tracker</h2>
+      <p>Placeholder prices for demonstration only. Replace with sourced market data later. {{ dataNotice }}</p>
+
+      <form id="ram-calculator" class="calculator-panel" novalidate>
+        <h3>RAM Price Calculator (sample)</h3>
+        <div class="calculator-grid">
+          <label>
+            Memory type
+            <select id="calc-type" name="type">
+              <option value="DDR4">DDR4</option>
+              <option value="DDR5">DDR5</option>
+            </select>
+          </label>
+          <label>
+            Capacity
+            <select id="calc-capacity" name="capacity"></select>
+          </label>
+          <label>
+            Quantity
+            <input id="calc-qty" name="quantity" type="number" min="1" value="2">
+          </label>
+          <button type="submit" class="calc-btn">Estimate</button>
+        </div>
+        <div class="calculator-results">
+          <p><span class="small-label">Estimated total</span> <strong id="calc-total">$0.00</strong></p>
+          <p><span class="small-label">Price per module</span> <strong id="calc-unit">$0.00</strong></p>
+          <p><span class="small-label">Change %</span> <strong id="calc-change">+0%</strong></p>
+        </div>
+        <p id="calc-note" class="calc-note">Uses sample catalog data only.</p>
+      </form>
+
+      <div class="table-wrapper">
+        <table id="price-table" class="price-table">
+          <caption>Sample RAM price comparison (not live)</caption>
+          <thead>
+            <tr>
+              <th scope="col">Memory</th>
+              <th scope="col">Capacity</th>
+              <th scope="col">Previous Price</th>
+              <th scope="col">Current Price</th>
+              <th scope="col">Change %</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="row in filteredPriceRows()">
+              <td>{{ row.memory }}</td>
+              <td>{{ row.capacity }}</td>
+              <td>{{ formatMoney(row.previous) }}</td>
+              <td>{{ formatMoney(row.current) }}</td>
+              <td>{{ formatChange(row.change) }}</td>
+              <td>{{ row.status }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="price-chart" class="chart-placeholder">
+        <p>RAM Price History (sample Chart.js data)</p>
+        <canvas id="priceChartCanvas" aria-label="Sample RAM price history chart"></canvas>
+      </div>
+    </section>
+
+    
+    <section id="supply-demand" class="supply-demand-section">
+      <h2>Supply vs Demand</h2>
+
+      <article id="ram-supply">
+        <h3>RAM supply</h3>
+        <p>
+          Supply comes mainly from a small number of memory manufacturers. Output depends on factory
+          capacity, wafer production, yields, and how much of that capacity is assigned to DRAM, HBM,
+          or other products. Expanding a memory plant takes time and large investment, so supply cannot
+          always rise as quickly as demand.
+        </p>
+      </article>
+
+      <article id="consumer-demand">
+        <h3>Consumer demand</h3>
+        <p>
+          Consumers need RAM for desktops, laptops, upgrades, and gaming PCs. When many people buy or
+          upgrade devices at once, consumer demand increases. If factory output is already reserved for
+          other markets, consumer kits can become more expensive or harder to find.
+        </p>
+      </article>
+
+      <article id="ai-datacenter-demand">
+        <h3>AI / data-center demand</h3>
+        <p>
+          AI training and inference systems use large amounts of high-bandwidth memory and server DRAM.
+          Data centers that host cloud services also buy memory in bulk. This type of demand can be large
+          enough to influence how manufacturers plan their production mix.
+        </p>
+      </article>
+
+      <article id="server-memory-demand">
+        <h3>Server memory demand</h3>
+        <p>
+          Servers typically use more RAM per machine than a home PC. Cloud providers, enterprises, and
+          AI companies all purchase server memory. Higher server demand can reduce the share of output
+          available for consumer DDR4 and DDR5 modules.
+        </p>
+      </article>
+
+      <div id="supply-demand-chart" class="chart-placeholder">
+        <p>Supply vs Demand (sample Chart.js data)</p>
+        <canvas id="supplyDemandChartCanvas" aria-label="Sample supply versus demand chart"></canvas>
+      </div>
+    </section>
+
+    <section id="ai-impact" class="ai-impact-section">
+      <h2>AI Impact</h2>
+      <p>A simple chain showing how AI growth can put pressure on memory supply. Click a step for a short sample explanation.</p>
+
+      <ol id="ai-impact-flow" class="ai-flow">
+        <li class="flow-step"
+            ng-repeat="step in flowSteps"
+            ng-class="{ 'is-active': selectedFlow.id === step.id }"
+            ng-click="selectFlow(step)">
+          {{ step.title }}
+        </li>
+      </ol>
+      <div id="flow-detail" class="detail-panel" ng-show="selectedFlow">
+        <h3>{{ selectedFlow.title }}</h3>
+        <p>{{ selectedFlow.text }}</p>
+      </div>
+    </section>
+
+    <section id="manufacturers" class="manufacturers-section">
+      <h2>Major RAM Manufacturers</h2>
+      <p>Company details below are placeholders for later research and citations. {{ dataNotice }}</p>
+
+      <label class="search-label">
+        Search RAM / Manufacturer...
+        <input type="search" class="search-input" ng-model="searchQuery" placeholder="Search RAM / Manufacturer...">
+      </label>
+
+      <p class="search-hint" ng-if="searchQuery">Showing matches for “{{ searchQuery }}”.</p>
+
+      <div id="manufacturer-cards" class="card-grid">
+        <article class="manufacturer-card"
+                 ng-repeat="maker in filteredManufacturers()"
+                 id="mfr-{{ maker.id }}">
+          <h3>{{ maker.name }}</h3>
+          <p><strong>Country:</strong> {{ maker.country }}</p>
+          <p><strong>Memory types:</strong> {{ maker.memoryTypes }}</p>
+          <p><strong>Main products:</strong> {{ maker.mainProducts }}</p>
+          <p>{{ maker.description }}</p>
+        </article>
+      </div>
+      <p ng-if="filteredManufacturers().length === 0">No manufacturer matches this sample search.</p>
+    </section>
+
+    
+    <section id="who-is-affected" class="affected-section">
+      <h2>Who Is Affected?</h2>
+
+      <article id="affected-pc-users">
+        <h3>PC users</h3>
+        <p>Desktop upgrades and new builds can cost more if DDR4 or DDR5 kits are limited or priced higher.</p>
+      </article>
+
+      <article id="affected-laptop-users">
+        <h3>Laptop users</h3>
+        <p>Laptop makers may raise device prices or ship models with less memory if modules are expensive.</p>
+      </article>
+
+      <article id="affected-gamers">
+        <h3>Gamers</h3>
+        <p>Gaming PCs often need more RAM. Higher kit prices can delay upgrades or reduce recommended configurations.</p>
+      </article>
+
+      <article id="affected-smartphone">
+        <h3>Smartphone manufacturers</h3>
+        <p>Phones use DRAM as well. Tight supply can affect bill of materials, storage/RAM configurations, and launch timing.</p>
+      </article>
+
+      <article id="affected-cloud">
+        <h3>Cloud companies</h3>
+        <p>Cloud providers buy server memory at large scale. Tight DRAM supply can raise infrastructure costs.</p>
+      </article>
+
+      <article id="affected-ai-companies">
+        <h3>AI companies</h3>
+        <p>AI firms compete for HBM and high-capacity DRAM used with GPUs and accelerators.</p>
+      </article>
+
+      <article id="affected-datacenters">
+        <h3>Data centers</h3>
+        <p>New racks and expansions depend on available server memory. Delays in memory can slow capacity growth.</p>
+      </article>
+    </section>
+
+    <!-- =========================
+         10. RAM BASICS
+         ========================= -->
+    <section id="ram-basics" class="ram-basics-section">
+      <h2>RAM Basics</h2>
+
+      <article id="what-is-ram">
+        <h3>What is RAM?</h3>
+        <p>
+          RAM is fast temporary memory that a computer uses while programs are running. It is not the same
+          as a hard drive or SSD, which store files long-term. More RAM usually lets a system keep more
+          programs and data ready at once.
+        </p>
+      </article>
+
+      <article id="what-is-dram">
+        <h3>What is DRAM?</h3>
+        <p>
+          DRAM (Dynamic Random Access Memory) is the most common type of RAM in PCs, laptops, phones, and
+          servers. It stores each bit in a tiny capacitor that must be refreshed regularly. Most “RAM kits”
+          sold for computers are DRAM modules.
+        </p>
+      </article>
+
+      <article id="what-is-ddr4">
+        <h3>DDR4</h3>
+        <p>
+          DDR4 is an older but still widely used DRAM standard. Many existing PCs and some servers still
+          use DDR4. It is generally cheaper per gigabyte than newer standards, depending on market conditions.
+        </p>
+      </article>
+
+      <article id="what-is-ddr5">
+        <h3>DDR5</h3>
+        <p>
+          DDR5 is a newer DRAM standard with higher bandwidth than DDR4. New PCs and many servers use DDR5.
+          It is a major product line in the current consumer and server memory market.
+        </p>
+      </article>
+
+      <article id="what-is-hbm">
+        <h3>HBM</h3>
+        <p>
+          HBM (High Bandwidth Memory) stacks DRAM dies and places them close to a GPU or accelerator.
+          It is used heavily in AI and high-performance computing because it can move data much faster than
+          standard DIMM-based DRAM.
+        </p>
+      </article>
+
+      <article id="consumer-vs-server">
+        <h3>Consumer RAM vs server RAM</h3>
+        <p>
+          Consumer RAM is typically sold as UDIMM or SODIMM kits for desktops and laptops. Server RAM is
+          often registered (RDIMM) or other enterprise modules, built for higher capacity, reliability, and
+          24/7 operation. Both can use related DRAM technology, but they are not always interchangeable.
+        </p>
+      </article>
+
+      <h3>Interactive type comparison (sample)</h3>
+      <div class="type-buttons" role="group" aria-label="RAM types">
+        <button type="button"
+                class="type-btn"
+                ng-repeat="type in filteredRamTypes()"
+                ng-class="{ 'is-active': selectedRamType.id === type.id }"
+                ng-click="selectRamType(type)">
+          {{ type.name }}
+        </button>
+      </div>
+      <article id="ram-type-detail" class="detail-panel" ng-if="selectedRamType">
+        <h3>{{ selectedRamType.name }}</h3>
+        <p><strong>Typical use:</strong> {{ selectedRamType.typicalUse }}</p>
+        <p><strong>Speed:</strong> {{ selectedRamType.speed }}</p>
+        <p><strong>Main purpose:</strong> {{ selectedRamType.purpose }}</p>
+        <p><strong>Consumer / server usage:</strong> {{ selectedRamType.usage }}</p>
+        <p><strong>Role in the current memory market:</strong> {{ selectedRamType.marketRole }}</p>
+      </article>
+
+      <div id="memory-type-chart" class="chart-placeholder">
+        <p>Memory Type Comparison (sample Chart.js data)</p>
+        <canvas id="memoryTypeChartCanvas" aria-label="Sample DDR4 DDR5 HBM comparison chart"></canvas>
+      </div>
+
+      <h3>Comparison table</h3>
+      <div class="table-wrapper">
+        <table id="ram-comparison-table" class="comparison-table">
+          <thead>
+            <tr>
+              <th scope="col">Type</th>
+              <th scope="col">Typical use</th>
+              <th scope="col">Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>RAM (general)</td>
+              <td>Working memory for running programs</td>
+              <td>Temporary; faster than storage</td>
+            </tr>
+            <tr>
+              <td>DRAM</td>
+              <td>PCs, phones, servers</td>
+              <td>Main technology behind most RAM</td>
+            </tr>
+            <tr>
+              <td>DDR4</td>
+              <td>Older PCs and some servers</td>
+              <td>Previous-generation standard</td>
+            </tr>
+            <tr>
+              <td>DDR5</td>
+              <td>Newer PCs and many servers</td>
+              <td>Higher bandwidth than DDR4</td>
+            </tr>
+            <tr>
+              <td>HBM</td>
+              <td>AI GPUs and accelerators</td>
+              <td>Very high bandwidth, stacked memory</td>
+            </tr>
+            <tr>
+              <td>Consumer RAM</td>
+              <td>Desktops and laptops</td>
+              <td>UDIMM / SODIMM kits</td>
+            </tr>
+            <tr>
+              <td>Server RAM</td>
+              <td>Data centers and enterprise servers</td>
+              <td>Higher capacity and reliability features</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    
+    <section id="timeline" class="timeline-section">
+      <h2>RAM Crisis Timeline</h2>
+      <p>Year entries are placeholders until sourced events are added. Click a year for sample details.</p>
+
+      <ol id="crisis-timeline" class="timeline-list">
+        <li ng-repeat="item in timelineItems"
+            id="timeline-{{ item.id }}"
+            ng-class="{ 'is-active': selectedYear.id === item.id }"
+            ng-click="selectYear(item)">
+          <h3>{{ item.year }}</h3>
+          <p>{{ item.summary }}</p>
+        </li>
+      </ol>
+      <div id="timeline-detail" class="detail-panel" ng-show="selectedYear">
+        <h3>{{ selectedYear.year }}</h3>
+        <p>{{ selectedYear.details }}</p>
+      </div>
+    </section>
+
+    
+    <section id="future-outlook" class="outlook-section">
+      <h2>Future Outlook</h2>
+      <p>
+        Future RAM prices and availability depend on several factors. This project does not forecast
+        exact prices. Instead, it lists the main variables that students and readers should continue to
+        check in reliable industry reports.
+      </p>
+      <ul id="outlook-factors">
+        <li><strong>Manufacturing capacity:</strong> how much DRAM and HBM factories can produce.</li>
+        <li><strong>AI demand:</strong> how much memory AI training and inference systems require.</li>
+        <li><strong>Data-center expansion:</strong> how quickly cloud and enterprise servers are built.</li>
+        <li><strong>Consumer demand:</strong> PC, laptop, gaming, and smartphone purchases.</li>
+        <li><strong>New memory technologies:</strong> newer DRAM generations, packaging, and HBM versions.</li>
+      </ul>
+    </section>
+
+    
+    <section id="dashboard" class="dashboard-section">
+      <h2>Data Dashboard Placeholder</h2>
+      <p>Sample charts using placeholder data. Not live market data. Future Flask/API JSON can replace these datasets.</p>
+
+      <div id="dashboard-grid">
+        <div id="price-chart-dashboard" class="chart-placeholder">
+          <h3>Price chart</h3>
+          <canvas id="dashboardPriceChart"></canvas>
+        </div>
+
+        <div id="supply-chart" class="chart-placeholder">
+          <h3>Supply chart</h3>
+          <canvas id="dashboardSupplyChart"></canvas>
+        </div>
+
+        <div id="demand-chart" class="chart-placeholder">
+          <h3>Demand chart</h3>
+          <canvas id="dashboardDemandChart"></canvas>
+        </div>
+
+        <div id="manufacturer-chart" class="chart-placeholder">
+          <h3>Manufacturer chart</h3>
+          <canvas id="dashboardManufacturerChart"></canvas>
+        </div>
+
+        <div id="crisis-meter" class="chart-placeholder">
+          <h3>Crisis meter</h3>
+          <canvas id="dashboardCrisisMeter"></canvas>
+        </div>
+      </div>
+    </section>
+
+    
+    <section id="sources" class="sources-section">
+      <h2>Sources</h2>
+      <p>
+        Add full citations here as research is completed. The links below are placeholders for commonly
+        used industry and news sources. Verify each URL and publication date before submitting the project.
+      </p>
+      <ul id="source-list">
+        <li><a href="#" id="source-trendforce">TrendForce (placeholder link)</a></li>
+        <li><a href="#" id="source-reuters">Reuters (placeholder link)</a></li>
+        <li><a href="#" id="source-samsung">Samsung semiconductor / memory page (placeholder)</a></li>
+        <li><a href="#" id="source-skhynix">SK hynix official site (placeholder)</a></li>
+        <li><a href="#" id="source-micron">Micron official site (placeholder)</a></li>
+        <li><a href="#" id="source-other">Other reliable sources (placeholder)</a></li>
+      </ul>
+    </section>
+
+  </main>
+
+  
+  <footer id="site-footer" class="site-footer">
+    <p><strong>RAM Crisis 2026</strong></p>
+    <p>College Project</p>
+    <p>Data and information should be updated regularly.</p>
+  </footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
